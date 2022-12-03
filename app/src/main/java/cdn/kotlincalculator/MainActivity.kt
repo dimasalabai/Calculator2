@@ -1,8 +1,10 @@
 package cdn.kotlincalculator
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import net.objecthunter.exp4j.ExpressionBuilder
@@ -36,6 +38,11 @@ class MainActivity : AppCompatActivity() {
         actionAdd.setOnClickListener { appendVal(" + ", false) }
 
         actionNext.setOnClickListener {
+
+            val resultIntent = Intent(this, ResultActivity::class.java)
+            val resultHeading = placeholder.text.toString()
+            resultIntent.putExtra(ResultActivity.HEADING_RESULT, resultHeading)
+
             val result = answer.text.toString()
             if (result.isNotEmpty()){
                 placeholder.text = ""
@@ -45,6 +52,12 @@ class MainActivity : AppCompatActivity() {
             else {
                 Toast.makeText(this, "Enter string", Toast.LENGTH_SHORT).show()
             }
+
+            val calculation = placeholder.text.toString()
+            resultIntent.putExtra(ResultActivity.CALCULATION_RESULT, calculation)
+
+            startActivity(resultIntent)
+
         }
 
         actionBack.setOnClickListener {
@@ -53,7 +66,6 @@ class MainActivity : AppCompatActivity() {
                 placeholder.text = expression.substring(0, expression.length - 1)
             }
             answer.text = ""
-
         }
 
         actionEquals.setOnClickListener {
@@ -87,5 +99,6 @@ class MainActivity : AppCompatActivity() {
             placeholder.append(string)
         }
     }
+
 
 }
